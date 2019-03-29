@@ -1,0 +1,136 @@
+﻿@inherits Umbraco.Web.Macros.PartialViewMacroPage
+@using Umbraco.Web
+
+
+@*
+    This snippet displays a list of links of the pages immediately under the top-most page in the content tree.
+    This is the home page for a standard website.
+    It also highlights the current active page/section in the navigation with the CSS class "current".
+*@
+
+@{
+    var site = Model.Content.Site();
+    // var root = Model.Content.Site();
+    var selection = site.Children.Where(x => x.IsVisible()).ToArray();
+    // dropdown items
+    var completedProjects = site.Children()
+                        .Where(x => x.DocumentTypeAlias == "projectsOverview")
+                        .First()
+                        .Children()
+                        .Where(x => x.HasValue("projectStatus")
+                        && Umbraco.GetPreValueAsString(x.GetPropertyValue<int>("projectStatus")) == "Completed"
+                        && x.IsVisible()).ToArray()
+                        .OrderByDescending(x => x.CreateDate)
+                        .Take(5);
+
+    // Unneeded variables for now. Used later
+    var currentPageId = UmbracoContext.Current.PageId;
+    var currentPage = Umbraco.TypedContent(currentPageId);
+}
+
+
+
+@*
+    @{
+
+    var root = Model.Content.Site(); // level 1
+    var selection = root.Children.Where(x => x.IsVisible()).ToArray(); // level 2
+
+    }
+*@
+@if (selection.Length > 0)
+{
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">@Umbraco.Field("siteTitle", recursive: true)</a>
+        <hr />
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="http://localhost:50629/">Home Page <span class="sr-only">(current)</span></a>
+                </li>
+
+                @foreach (var item in selection)
+                {
+                    if (item.Children.Count() > 0)
+                    {
+
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="@item.Url" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @item.Name
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                @if (item.DocumentTypeAlias == "projectsOverview")
+                                {
+
+                                    @*foreach (var subItem in item.Children().Where(x => x.HasValue("projectStatus")
+                                          && Umbraco.GetPreValueAsString(x.GetPropertyValue<int>("projectStatus")) == "Completed"
+                                          && x.IsVisible()))
+                                    {
+                                        <a class="dropdown-item" href="@subItem.Url">@subItem.Name</a>
+                                    }*@
+
+                                foreach (var subItem in item.Children().Where(x => x.IsVisible()))
+                                {
+
+                                    var isProtected = umbraco.library.IsProtected(subItem.Id, subItem.Path);
+                                    var loginAccess = isProtected && umbraco.library.HasAccess(subItem.Id, subItem.Path);
+
+                                    if (!isProtected || loginAccess)
+                                    {
+                                        <a class="dropdown-item" href="@subItem.Url">@subItem.Name</a>
+                                            }
+                                        }
+                                    }
+                                            else
+                                            {
+                                                foreach (var subItem in item.Children().Where(x => x.IsVisible()))
+                                                {
+                                                    <a class="dropdown-item" href="@subItem.Url">@subItem.Name</a>
+                                            }
+                                }
+                            </div>
+                        </li>
+                        /**/
+                    }
+                    else
+                    {
+
+                        <li class="nav-item @(item.IsAncestorOrSelf(Model.Content) ? "current" : null)">
+                            <a href="@item.Url" class="nav-link">@item.Name</a>
+                        </li>
+                    }
+                }
+
+
+
+
+
+
+
+
+                @*
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Dropdown
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li*@
+
+        </div>
+    </nav>
+
+}
+
+
+}
+

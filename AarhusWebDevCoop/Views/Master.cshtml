@@ -1,0 +1,46 @@
+﻿@inherits UmbracoViewPage
+@{
+                Layout = null;
+}
+
+@* the fun sawefatarts here *@
+<!DOCTYPE html>
+<html>
+<head>
+    @*<meta charset="UTF-8">*@
+
+    <title>@Umbraco.Field("siteTitle", recursive: true)</title>
+
+    <meta name="description" content="@Umbraco.Field("metaDescription", recursive: true)" />
+    <meta name="keywords" content="@Umbraco.Field("metaKeywords", recursive: true)" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="~/Content/bootstrap.min.css">
+
+</head>
+<body>
+
+    <header class="wrapper clearfix">
+        @Umbraco.RenderMacro("mainMenu")
+    </header>
+
+    <div class="container">
+        @RenderBody()
+    </div>
+
+    <footer class="fixed-bottom container-fluid container-light text-center bg-dark text-white">
+        <p class="h5">
+            @Umbraco.Field("footer", recursive: true)
+        </p>
+    </footer>
+
+
+    <!-- jQuery + Bootstrap -->
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

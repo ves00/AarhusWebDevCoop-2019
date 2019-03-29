@@ -1,0 +1,26 @@
+﻿@inherits Umbraco.Web.Macros.PartialViewMacroPage
+@{
+    var ourProjects = Model.Content.Site().Children()
+        .Where(x => x.DocumentTypeAlias == "projectsOverview")
+        .First()
+        .Children()
+        .Where(x => x.HasValue("projectStatus")
+            && Umbraco.GetPreValueAsString(x.GetPropertyValue<int>
+        ("projectStatus")) == "Completed"
+        && x.IsVisible()).ToArray()
+        .OrderByDescending(p => p.CreateDate)
+        .Take(5);
+}
+
+    <ul>
+        @foreach (var project in ourProjects) {
+        <li>@project.Name</li>
+        }
+
+    </ul>
+    <!-- jQuery + Bootstrap -->
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

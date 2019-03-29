@@ -1,0 +1,45 @@
+﻿@inherits UmbracoViewPage<HomePage>
+@{
+    Layout = "Master.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+
+    <h1 style=" text-align:center; font-size:60px;">Welcome to Business Academy Aarhus!</h1>
+    <hr>
+    <h2 style="font-size:35px;">Facts about Business Academy Aarhus – one of the largest business academies in Denmark</h2>
+    <!--<h3>– one of the largest business academies in Denmark</h3>-->
+    <br />
+    <p style="font-size:20px;">
+        Business Academy Aarhus develops and offers practice-orientated higher education programmes primarily for the private business sector, and our main goal is to enable students to get a job. We are one of the largest business academies in Denmark with:
+    </p>
+    <ul style="font-size:20px;">
+        <li>4900 full-time students</li>
+        <li>700 international students</li>
+        <li>400 employees</li>
+    </ul>
+    <h2 style="font-size:35px;">Business Academy Aarhus is a School of Applied Sciences.</h2>
+    <br />
+    <p style="font-size:20px;">
+        In European countries, this is an English-language term for institutions of higher education. The degree programmes we offer focus on applied degrees.
+
+        Like research universities, we provide undergraduate programmes and can grant academic degrees, but we do not award master's or doctoral degrees.
+
+        In addition to this we also offer further education and part-time programmes up to Bachelor’s level for people who need to strengthen their qualifications on the job.
+    </p>
+   
+    <h2 style="font-size:35px;">Three newest, completed projects</h2>
+    <div>@Umbraco.RenderMacro("listNewestProjects")</div>
+
+    <!-- jQuery + Bootstrap -->
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>
+

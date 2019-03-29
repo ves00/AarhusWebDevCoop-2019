@@ -1,0 +1,15 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ArticleItem>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+    @{
+    Layout = "Master.cshtml";
+    }
+
+    <h2 class="">@Model.ArticleTitle</h2>
+
+
+    <hr />
+    <article>
+        @Model.ArticleContent
+    </article>
+    
+
